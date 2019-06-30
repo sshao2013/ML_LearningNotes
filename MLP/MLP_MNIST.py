@@ -3,6 +3,8 @@ import random
 import os, struct
 from array import array as pyarray
 
+# ref: http://neuralnetworksanddeeplearning.com/chap1.html
+
 
 def sigmoid(z):
     # sigmoid function
@@ -14,13 +16,13 @@ def sigmoid_prime(z):
     return sigmoid(z) * (1 - sigmoid(z))
 
 
-def feedforward(x, B, W):
+def forward_propagation(x, B, W):
     for b, w in zip(B, W):
         x = sigmoid(np.dot(w, x) + b)
     return x
 
 
-def backprop(x, y, num_layers, W, B):
+def backward_propagation(x, y, num_layers, W, B):
     nabla_b = [np.zeros(b.shape) for b in B]
     nabla_w = [np.zeros(w.shape) for w in W]
 
@@ -51,7 +53,7 @@ def update_mini_batch(B, W, num_layers, mini_batch, learning_rate):
     nabla_b = [np.zeros(b.shape) for b in B]
     nabla_w = [np.zeros(w.shape) for w in W]
     for x, y in mini_batch:
-        delta_nabla_b, delta_nabla_w = backprop(x, y, num_layers, W, B)
+        delta_nabla_b, delta_nabla_w = backward_propagation(x, y, num_layers, W, B)
         nabla_b = [nb + dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
         nabla_w = [nw + dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
     W = [w - (learning_rate / len(mini_batch)) * nw for w, nw in zip(W, nabla_w)]
@@ -87,7 +89,7 @@ def gradient_descent(train_set, epoch, batch_size, learning_rate, test_set=None)
 
 
 def evaluate(test_data, B, W):
-    test_results = [(np.argmax(feedforward(x, B, W)), y) for (x, y) in test_data]
+    test_results = [(np.argmax(forward_propagation(x, B, W)), y) for (x, y) in test_data]
     return sum(int(x == y) for (x, y) in test_results)
 
 
@@ -96,7 +98,7 @@ def cost_derivative(output_activations, y):
 
 
 def predict(data, B, W):
-    value = feedforward(data, B, W)
+    value = forward_propagation(data, B, W)
     return value.tolist().index(max(value))
 
 

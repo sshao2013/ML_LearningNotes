@@ -71,8 +71,10 @@ def run():
 
     x, y = load_dataset('plot_data.txt')
     x_scaling, x_max, x_min = scaling(x)
+
     w1, b1, w2, b2 = gradient_descent(x_scaling, y, hidden_layer_dimension, num_iterations, learning_rate)
 
+    # graph part
     plotx1 = np.arange(0, 10, 0.01)
     plotx2 = np.arange(0, 10, 0.01)
     plotX1, plotX2 = np.meshgrid(plotx1, plotx2)

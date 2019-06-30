@@ -35,7 +35,7 @@ def run():
     learning_rate = 0.1
     b = np.random.rand(1) #init b value to start finding final value
     w = np.random.rand(1) #init w value to start finding final value
-    num_iterations = 50
+    num_iterations = 100
 
     plt.figure(figsize=(10, 5))
 
